@@ -12,7 +12,7 @@ pipeline {
 
         stage('Install System Dependencies') {
             steps {
-                echo 'Installing system dependencies required for psycopg2'
+                echo 'Installing system dependencies for psycopg2'
                 sh '''
                     apt-get update
                     apt-get install -y gcc libpq-dev
@@ -22,12 +22,11 @@ pipeline {
 
         stage('Setup Python Virtual Environment') {
             steps {
-                echo 'Creating Python virtual environment'
+                echo 'Setting up Python virtual environment'
                 sh '''
                     python3 --version
                     python3 -m venv venv
                     . venv/bin/activate
-
                     pip install --upgrade pip
                     pip install -r requirements/dev.txt
                 '''
@@ -35,15 +34,15 @@ pipeline {
         }
 
         stage('Run Unit Tests') {
-    	    steps {
-       	        echo 'Running pytest (non-blocking for legacy dependency compatibility)'
+            steps {
+                echo 'Running pytest (non-blocking due to legacy dependency)'
                 sh '''
-            	    . venv/bin/activate
+                    . venv/bin/activate
                     pytest || true
                 '''
             }
-	}	
-
+        }
+    }
 
     post {
         success {
