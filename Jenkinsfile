@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Checking out Python project'
+                echo 'Checking out Python project from GitHub'
                 checkout scm
             }
         }
@@ -13,21 +14,22 @@ pipeline {
             steps {
                 echo 'Setting up Python virtual environment'
                 sh '''
-                    python -m venv venv
+                    python3 --version
+                    python3 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
-                    pip install -r requirements.txt || pip install pytest
+                    pip install pytest
                 '''
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                echo 'Running pytest'
+                echo 'Running pytest unit tests'
                 sh '''
                     . venv/bin/activate
                     mkdir -p test-results
-                    pytest --junitxml=test-results/results.xml
+                    python -m pytest --junitxml=test-results/results.xml
                 '''
             }
             post {
