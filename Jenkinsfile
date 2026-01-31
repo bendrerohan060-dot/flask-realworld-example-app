@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+            args '-u root'
+        }
+    }
 
     stages {
 
@@ -10,13 +15,11 @@ pipeline {
             }
         }
 
-        stage('Setup Python Environment') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Setting up Python virtual environment'
+                echo 'Installing Python dependencies'
                 sh '''
-                    python3 --version
-                    python3 -m venv venv
-                    . venv/bin/activate
+                    python --version
                     pip install --upgrade pip
                     pip install pytest
                 '''
@@ -27,9 +30,8 @@ pipeline {
             steps {
                 echo 'Running pytest unit tests'
                 sh '''
-                    . venv/bin/activate
                     mkdir -p test-results
-                    python -m pytest --junitxml=test-results/results.xml
+                    pytest --junitxml=test-results/results.xml
                 '''
             }
             post {
