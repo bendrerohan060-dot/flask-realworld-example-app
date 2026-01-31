@@ -5,20 +5,20 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out Python project'
+                echo 'Checking out source code'
                 checkout scm
             }
         }
 
-        stage('Install Python & Dependencies') {
+        stage('Setup Python Virtual Environment') {
             steps {
-                echo 'Installing Python and pytest inside Jenkins container'
+                echo 'Creating Python virtual environment'
                 sh '''
-                    apt-get update
-                    apt-get install -y python3 python3-venv python3-pip
                     python3 --version
-                    pip3 install --upgrade pip
-                    pip3 install pytest
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements/dev.txt
                 '''
             }
         }
@@ -27,15 +27,9 @@ pipeline {
             steps {
                 echo 'Running pytest'
                 sh '''
-                    python3 -m venv venv
                     . venv/bin/activate
-                    pytest --junitxml=test-results/results.xml
+                    pytest
                 '''
-            }
-            post {
-                always {
-                    junit 'test-results/results.xml'
-                }
             }
         }
     }
