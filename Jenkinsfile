@@ -1,36 +1,34 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out Python project from GitHub'
+                echo 'Checking out Python project'
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Python & Dependencies') {
             steps {
-                echo 'Installing Python dependencies'
+                echo 'Installing Python and pytest inside Jenkins container'
                 sh '''
-                    python --version
-                    pip install --upgrade pip
-                    pip install pytest
+                    apt-get update
+                    apt-get install -y python3 python3-venv python3-pip
+                    python3 --version
+                    pip3 install --upgrade pip
+                    pip3 install pytest
                 '''
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                echo 'Running pytest unit tests'
+                echo 'Running pytest'
                 sh '''
-                    mkdir -p test-results
+                    python3 -m venv venv
+                    . venv/bin/activate
                     pytest --junitxml=test-results/results.xml
                 '''
             }
