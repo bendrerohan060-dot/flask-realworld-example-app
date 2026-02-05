@@ -25,7 +25,16 @@ jobs:
           pip install -r requirements.txt
           pip install pytest webtest
 
+      - name: Inject Python 3.10 compatibility patch
+        run: |
+          echo "import collections" > sitecustomize.py
+          echo "import collections.abc" >> sitecustomize.py
+          echo "collections.MutableMapping = collections.abc.MutableMapping" >> sitecustomize.py
+          echo "collections.Mapping = collections.abc.Mapping" >> sitecustomize.py
+          echo "collections.Sequence = collections.abc.Sequence" >> sitecustomize.py
 
       - name: Run tests
+        env:
+          PYTHONPATH: .
         run: |
-          pytest
+          pytest --collect-only
