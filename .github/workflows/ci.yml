@@ -22,19 +22,28 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install legacy-compatible dependencies
+      - name: Install ALL legacy-compatible dependencies (final)
         run: |
           python -m pip install --upgrade pip
           pip install \
           Flask==1.1.4 \
           Jinja2==2.11.3 \
           MarkupSafe==1.1.1 \
+          Werkzeug==1.0.1 \
           Flask-SQLAlchemy==2.2 \
-          Flask-Bcrypt==0.7.1 \
           SQLAlchemy==1.1.9 \
-          Flask-Migrate \
+          Flask-Migrate==2.7.0 \
+          Flask-Bcrypt==0.7.1 \
           Flask-Caching==1.10.1 \
-          WebTest \
+          Flask-Cors==3.0.10 \
+          Flask-JWT-Extended==3.25.1 \
+          PyJWT==1.7.1 \
+          marshmallow==2.21.0 \
+          webargs==5.5.3 \
+          flask-apispec==0.8.8 \
+          unicode-slugify==0.1.5 \
+          psycopg2-binary==2.9.9 \
+          WebTest==2.0.35 \
           pytest \
           pytest-xdist
 
