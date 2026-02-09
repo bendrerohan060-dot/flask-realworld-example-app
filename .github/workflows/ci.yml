@@ -38,7 +38,7 @@ jobs:
           Flask-Cors==3.0.10 \
           Flask-JWT-Extended==3.25.1 \
           PyJWT==1.7.1 \
-          marshmallow==2.21.0 \
+          marshmallow==2.21.0
           webargs==5.5.3 \
           flask-apispec==0.8.8 \
           unicode-slugify==0.1.5 \
