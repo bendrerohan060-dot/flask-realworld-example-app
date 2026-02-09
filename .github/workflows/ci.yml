@@ -1,4 +1,4 @@
-name: Flask CI Pipeline
+name: Real Parallel Test Execution (Scalability)
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build-test:
+  parallel-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -22,24 +22,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest webtest
+          pip install pytest pytest-xdist
+          pip install -r requirements.txt || true
 
-      - name: Inject Python 3.10 compatibility patch
+      - name: Run tests in parallel (REAL scalability)
         run: |
-          echo "import collections" > sitecustomize.py
-          echo "import collections.abc" >> sitecustomize.py
-          echo "collections.MutableMapping = collections.abc.MutableMapping" >> sitecustomize.py
-          echo "collections.Mapping = collections.abc.Mapping" >> sitecustomize.py
-          echo "collections.Sequence = collections.abc.Sequence" >> sitecustomize.py
-
-      - name: CI sanity check (legacy app)
-        run: |
-          echo "CI pipeline executed successfully"
-          echo "Legacy application detected"
-          echo "Tests skipped due to dependency incompatibility"
-
-      - name: CI sanity check
-        run: echo "Maintenance change applied"
-
-
+          pytest -n 3 tests/
