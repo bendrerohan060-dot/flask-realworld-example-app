@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
+      - name: Download source code (ZIP – avoids git 500)
+        run: |
+          curl -L -o source.zip https://github.com/bendrerohan060-dot/flask-realworld-example-app/archive/refs/heads/main.zip
+          unzip source.zip
+          mv flask-realworld-example-app-main/* .
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
