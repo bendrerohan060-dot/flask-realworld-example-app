@@ -52,4 +52,5 @@ jobs:
 
       - name: Run tests in parallel (REAL scalability)
         run: |
-          pytest -n 3 tests/
+          python -m pytest -n 3 tests/
+
