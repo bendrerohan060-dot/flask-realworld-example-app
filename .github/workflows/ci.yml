@@ -17,16 +17,22 @@ jobs:
           unzip source.zip
           mv flask-realworld-example-app-main/* .
 
-      - name: Set up Python (compatible with legacy app)
+      - name: Set up Python (legacy compatible)
         uses: actions/setup-python@v5
         with:
           python-version: '3.8'
 
-      - name: Install dependencies
+      - name: Install legacy-compatible dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-xdist WebTest
-          pip install -r requirements.txt
+          pip install \
+            Flask==1.1.4 \
+            Flask-SQLAlchemy==2.2 \
+            SQLAlchemy==1.1.9 \
+            Flask-Migrate \
+            WebTest \
+            pytest \
+            pytest-xdist
 
       - name: Run tests in parallel (REAL scalability)
         run: |
