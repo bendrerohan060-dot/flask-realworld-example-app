@@ -33,6 +33,7 @@ jobs:
           Flask-Bcrypt==0.7.1 \
           SQLAlchemy==1.1.9 \
           Flask-Migrate \
+          Flask-Caching==1.10.1 \
           WebTest \
           pytest \
           pytest-xdist
