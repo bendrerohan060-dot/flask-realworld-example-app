@@ -39,3 +39,7 @@ jobs:
           echo "Legacy application detected"
           echo "Tests skipped due to dependency incompatibility"
 
+      - name: CI sanity check
+        run: echo "Maintenance change applied"
+
+
